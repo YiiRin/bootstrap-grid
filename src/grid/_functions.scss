@@ -1,0 +1,29 @@
+// @import './variables';
+/**
+ * 根据断点名称取得对应的断点 width.
+ * 注意：如果是 xs 断点，返回的是 null
+ * @param $name:  传入的 map key
+ * @param $breakpoints-map: 断点 map
+ * @return: 断点对应的 mind-width
+ */
+@function breakpoint-min($name, $breakpoints-map: $grid-breakpoints) {
+    $min: map-get($map: $breakpoints-map, $key: $name);
+    @return if($min != 0, $min, null);
+}
+
+@debug breakpoint-min(xs);
+
+/**
+ * 根据断点名称作为 key 查询map
+ * 若是 map 中 key对应的 value 不为 0 则生成后缀名
+ * 否则返回空串
+ *
+ * @param $name:  传入的 map key
+ * @param $breakpoints-map: 断点 map
+ * @return: 断点对应的后缀名 格式 '-sm'
+ */
+@function breakpoint-infix($name, $breakpoints-map: $grid-breakpoints) {
+    @return if(breakpoint-min($name) != null, '-#{$name}', '');
+}
+
+@debug breakpoint-infix(xs);

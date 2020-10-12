@@ -1,0 +1,53 @@
+
+/**
+ * 基本容器的样式
+ * 宽度 100%
+ * 有半个槽宽的内边距
+ * 水平居中
+ * @param $gutter 槽宽, 如果只是想要一个普通的容器。可以将参数槽宽设置为 0
+ *                默认值是 $gird-gutter-width
+ */
+@mixin make-container($gutter: $grid-gutter-width) {
+    width: 100%;
+    padding-right: $gutter / 2;
+    padding-left: $gutter / 2;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+/**
+ * 根据 $name 作为 key 查询 $breakpoints-map 中对应的断点值 
+ * 如果断点值存在，则对相应内容设置媒体查询
+ * 如果断点值不存在，则将混合的内容原样输出
+ * 
+ * @param $name 断点名称
+ * @param $breakpoints-map 保存断点的 map
+ */
+@mixin media-breakpoint-up($name, $breakpoints-map: $grid-breakpoints) {
+    $min: breakpoint-min($name, $breakpoints-map);
+
+    @if $min {
+        @media (min-width: $min) {
+            @content;
+        }
+    }@else {
+        @content;
+    }
+}
+
+/**
+ * 行基础样式
+ * 开启 flex 布局
+ * 允许多行容器
+ * 左右有半个槽宽的负外边距
+ * 
+ * @param $gutter 槽宽
+ */
+@mixin make-row($gutter: $grid-gutter-width) {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -$gutter / 2;
+  margin-left: -$gutter / 2;
+}
+

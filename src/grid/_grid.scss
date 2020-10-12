@@ -1,0 +1,73 @@
+// @import './mixins';
+// @import './variables';
+// @import './functions';
+
+@if $enable-grid {
+    // 容器部分
+    .container,
+    .container-fluid {
+        @include make-container();
+    }
+
+    @if $enable-grid-media-query {
+        /**
+         * 从 sm 开始到 xl 结束
+         * sm 540px
+         * md 720px
+         * lg 960px
+         * xl 1140px
+         */
+        @each $breakpoint, $container-max-width in $container-max-widths {
+            /**
+             * 设置 .container-* 系列的基础样式
+             * 
+             */
+            .container-#{$breakpoint} {
+                @extend .container-fluid;
+            }
+            /**
+             * .container
+             * .container-sm
+             * .container-md
+             * .container-lg
+             * .container-xl
+             * 按照断点设置媒体查询
+             * 其实就是通过 max-width 控制容器到底有多宽
+             */
+            @include media-breakpoint-up($breakpoint, $grid-breakpoints) {
+                // 每个断点的屏幕最大 width
+                %responsitive-#{$breakpoint} {
+                    max-width: $container-max-width;
+                }
+
+                // 用于确定哪些容器需要设置媒体查询的 flag
+                $extend-breakpoint: true;
+
+                @each $name, $width in $grid-breakpoints {
+                    @if $extend-breakpoint {
+                        .container#{breakpoint-infix($name)} {
+                            @extend %responsitive-#{$breakpoint};
+                        }
+                    }
+
+                    @if $name == $breakpoint {
+                        $extend-breakpoint: false;
+                    }
+                }
+
+
+            }
+            
+        }
+    }
+
+    // 行
+    .row {
+        @include make-row();
+    }
+
+    // 列
+    @include make-grid-columns();
+
+
+}
